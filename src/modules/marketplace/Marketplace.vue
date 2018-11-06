@@ -1,10 +1,8 @@
 <template>
   <div>
-    <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createProductModal"><i class="fa fa-plus"></i> New Product</button>
     <create-product></create-product>
-    <ul class="sample">
-      <li v-for="item, index in menus">{{item.title}} <i v-bind:class="item.icon" class="pull-right"></i></li>
-    </ul>
+
+    <products></products>
   </div>
 </template>
 <script>
@@ -14,7 +12,8 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   components: {
-    'create-product': require('modules/marketplace/Create.vue')
+    'create-product': require('modules/product/Create.vue'),
+    'products': require('modules/product/Products.vue')
   },
   mounted(){
   },
