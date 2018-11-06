@@ -28,20 +28,23 @@ export default {
 </script>
 <style scoped>
 .holder{
-  width: 100%;
+  width: 93%;
   float: left;
-  height: 10vh;
+  height: 8vh;
+  padding-left: 5px;
 }
 .profile{
   width: 50px;
   height: 50px;
   border-radius: 50%;
   float: left;
+
 }
 label{
   line-height: 50px;
   padding-left: 10px;
   float: left;
+  align: center;
 }
 
 i{
