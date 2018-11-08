@@ -30,6 +30,7 @@ class ProductController extends ClassWorxController
       return $this->response();
     }
 
+
     public function getProductPhoto($productId){
       $result = ProductPhoto::where('product_id', '=', $productId)->orderBy('status', 'ASC')->get();
       return (sizeof($result) > 0) ? $result : null;
