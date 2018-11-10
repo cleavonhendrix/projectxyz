@@ -528,6 +528,42 @@ Route::post('/product_inventories/update', "ProductInventoryController@update");
 Route::post('/product_inventories/delete', "ProductInventoryController@delete");
 Route::get('/product_inventories/test', 'ProductInventoryController@test');
 
+//Messenger Member Controller
+Route::post('/messenger_members/create', "MessengerMemberController@create");
+Route::post('/messenger_members/retrieve', "MessengerMemberController@retrieve");
+Route::post('/messenger_members/update', "MessengerMemberController@update");
+Route::post('/messenger_members/delete', "MessengerMemberController@delete");
+Route::get('/messenger_members/test', 'MessengerMemberController@test');
+
+//Messenger Message Controller
+Route::post('/messenger_message_files/create', "MessengerMessageFileController@create");
+Route::post('/messenger_message_files/retrieve', "MessengerMessageFileController@retrieve");
+Route::post('/messenger_message_files/update', "MessengerMessageFileController@update");
+Route::post('/messenger_message_files/delete', "MessengerMessageFileController@delete");
+Route::get('/messenger_message_files/test', 'MessengerMessageFileController@test');
+
+//Messenger Emial Controller
+Route::post('/messenger_emails/create', "MessengerEmailController@create");
+Route::post('/messenger_emails/retrieve', "MessengerEmailController@retrieve");
+Route::post('/messenger_emails/update', "MessengerEmailController@update");
+Route::post('/messenger_emails/delete', "MessengerEmailController@delete");
+Route::get('/messenger_emails/test', 'MessengerEmailController@test');
+
+//Messenger Emial Controller
+Route::post('/messenger_texts/create', "MessengerTextController@create");
+Route::post('/messenger_texts/retrieve', "MessengerTextController@retrieve");
+Route::post('/messenger_texts/update', "MessengerTextController@update");
+Route::post('/messenger_texts/delete', "MessengerTextController@delete");
+Route::get('/messenger_texts/test', 'MessengerTextController@test');
+
+
+//Product Attribute Controller
+Route::post('/product_attributes/create', "ProductAttributeController@create");
+Route::post('/product_attributes/retrieve', "ProductAttributeController@retrieve");
+Route::post('/product_attributes/update', "ProductAttributeController@update");
+Route::post('/product_attributes/delete', "ProductAttributeController@delete");
+Route::get('/product_attributes/test', 'ProductAttributeController@test');
+
 // RTC Videos Controller
 Route::post('/rtc_videos/create', "RtcVideoController@create");
 Route::post('/rtc_videos/retrieve', "RtcVideoController@retrieve");
