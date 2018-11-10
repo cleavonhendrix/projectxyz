@@ -67,7 +67,7 @@ class AuthenticateController extends Controller
       if(sizeof($notifResult) > 0){
         if($notifResult[0]['email'] === "ON"){
           // Notify via email
-          dispatch(new Email($result[0], 'login'));
+          // dispatch(new Email($result[0], 'login'));
         }else if($notifResult[0]['sms'] === "ON"){
           // Notify via SMS
         }else if($notifResult[0]['fb_messenger'] === "ON"){
