@@ -1,8 +1,8 @@
 <template>
   <div class="holder">
-    <img :src="config.BACKEND_URL + user.profile.profile_url" class="profile" v-if="user.profile !== null">
-    <i class="fa fa-user-circle-o" v-else></i>
-    <label>{{user.username}}</label>
+    <textarea type="text" class="form-control" placeholder="New Message..." v-model="newMessageInput" @keyup.enter="newmessage(id)">
+    </textarea>
+    <button type="button" class="btn btn-primary" @click="newmessage(id)">Send</button>
   </div>
 </template>
 <script>
@@ -15,13 +15,44 @@ export default {
   data(){
     return {
       user: AUTH.user,
-      config: CONFIG
+      config: CONFIG,
+      errorMessage: null,
+      newMessageInput: null,
+      prevNewMessageIndex: null
     }
   },
   props: ['params'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
+        this.data = response.data
+      })
+    },
+    newmessage(id){
+      if(this.newMessageInput !== '' || this.newMessageInput !== null){
+        let parameter = {
+          payload: 'event',
+          payload_value: id,
+          account_id: this.user.userID,
+          text: this.newMessageInput
+        }
+        this.APIRequest('messenger_groups/create', parameter).then(response => {
+          if(response.data > 0){
+            this.prevNewMessageIndex = null
+            this.retrieve()
+          }
+        })
+      }
     }
   }
 }
@@ -30,7 +61,7 @@ export default {
 .holder{
   width: 100%;
   float: left;
-  height: 10vh;
+  height: 15vh;
 }
 .profile{
   width: 50px;
@@ -38,15 +69,24 @@ export default {
   border-radius: 50%;
   float: left;
 }
-label{
-  line-height: 50px;
-  padding-left: 10px;
-  float: left;
+
+.btn{
+  width: 10%;
+  padding: 5px;
+  float: right;
+  height: 45px;
+  position: relative;
+  bottom: 60px;
+  right: 13px;
+  text-align: center;
 }
 
-i{
-  font-size: 50px;
-  line-height: 50px;
-  float: left;
+.form-control{
+  padding: 10px;
+  margin: 10px;
+  width: 85%;
+  height: 10vh;
+  resize: none;
 }
+
 </style>
