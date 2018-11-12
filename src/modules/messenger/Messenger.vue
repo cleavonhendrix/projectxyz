@@ -1,9 +1,11 @@
 <template>
   <div class="holder">
     <div class="conversation">
-      <conversation></conversation>
+      <conversation></conversation>   
     </div>
-    <div class="users"></div>
+    <div class="users">
+      <userlist></userlist>
+    </div>
   </div>
 </template>
 <script>
@@ -25,7 +27,8 @@ export default {
   },
   props: ['params'],
   components: {
-    'conversation': require('modules/conversation/Conversation.vue')
+    'conversation': require('modules/conversation/Conversation.vue'),
+    'userlist': require('modules/userlist/Messages.vue')
   },
   methods: {
     redirect(parameter){
@@ -62,7 +65,6 @@ export default {
   width: 100%;
   float: left;
 }
-
 .conversation{
   width: 70%;
   float: left;
@@ -72,8 +74,8 @@ export default {
 .users{
   width: 30%;
   float: left;
-  height: 500px;
-  background: #555;
+  height: 90vh; 
+  padding: 2px;
+  overflow-y:hidden;
 }
-
 </style>
