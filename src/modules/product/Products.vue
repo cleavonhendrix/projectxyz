@@ -1,7 +1,9 @@
 <template>
   <div class="holder">
     <table class="table">
+
       <thead>
+       
         <tr>
           <td>ID</td>
           <td>Title</td>
@@ -10,6 +12,9 @@
           <td>Status</td>
         </tr>
       </thead>
+
+
+
       <tbody>
         <tr v-for="item, index in data" v-if="data !== null">
           <td>{{item.id}}</td>

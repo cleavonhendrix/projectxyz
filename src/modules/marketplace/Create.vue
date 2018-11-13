@@ -14,7 +14,7 @@
             </span>
             <br v-if="errorMessage !== null">
             <br>
-<!--             <div class="featured-image">
+            <div class="featured-image">
               <span class="options" v-on:click="addFeaturedImage()" v-if="featuredFile === null" title="Click to add">
                 <i class="fa fa-plus-circle"></i>
                 <label>Add Featured Image</label>
@@ -24,7 +24,7 @@
                 <img :src="featuredFileUrl">
                 <input type="file" id="addFeaturedImage" name="file" accept="image/*"  @change="setUpFileUploadFeaturedImage($event)">
               </span>
-            </div> -->
+            </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Title</label>
               <input type="text" class="form-control" v-model="newEvent.title" placeholder="Type title here...">
