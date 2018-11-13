@@ -1,7 +1,7 @@
 <template>
   <div class="holder">
     <div class="profile-icon">
-      <div class="left-template" v-for="i in 3">
+      <div class="left-template">
       <img :src="config.BACKEND_URL + user.profile.profile_url" class="profile pull-left" v-if="user.profile !== null">
        <i class="fa fa-user-circle-o" v-else></i>
        <label class="content" >
