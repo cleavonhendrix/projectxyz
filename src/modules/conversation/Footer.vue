@@ -1,62 +1,12 @@
 <template>
   <div class="holder">
-    <textarea type="text" class="form-control" placeholder="New Message..." v-model="newMessageInput" @keyup.enter="newmessage(id)">
+    <textarea type="text" class="form-control" placeholder="Type your message here..." v-model="newMessageInput" @keyup.enter="newmessage()">
     </textarea>
-    <button type="button" class="btn btn-primary" @click="newmessage(id)">Send</button>
+    <span>
+      <i class="fa fa-reply" @click="newmessage()"></i>
+    </span>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
-export default {
-  mounted(){
-  },
-  data(){
-    return {
-      user: AUTH.user,
-      config: CONFIG,
-      errorMessage: null,
-      newMessageInput: null,
-      prevNewMessageIndex: null
-    }
-  },
-  props: ['params'],
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    },
-    retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
-      }
-      this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
-        this.data = response.data
-      })
-    },
-    newmessage(id){
-      if(this.newMessageInput !== '' || this.newMessageInput !== null){
-        let parameter = {
-          payload: 'event',
-          payload_value: id,
-          account_id: this.user.userID,
-          text: this.newMessageInput
-        }
-        this.APIRequest('messenger_groups/create', parameter).then(response => {
-          if(response.data > 0){
-            this.prevNewMessageIndex = null
-            this.retrieve()
-          }
-        })
-      }
-    }
-  }
-}
-</script>
 <style scoped>
 .holder{
   width: 100%;
@@ -82,11 +32,62 @@ export default {
 }
 
 .form-control{
-  padding: 10px;
-  margin: 10px;
-  width: 85%;
-  height: 10vh;
-  resize: none;
+  width: 90% !important;
+  float: left !important;
+  height: 45px !important;
+}
+span{
+  width: 10%;
+  float: left;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+}
+span i{
+  font-size: 24px;
+}
+span i:hover{
+  cursor: pointer;
+  color: #3f0050;
 }
 
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+import CONFIG from '../../config.js'
+export default {
+  mounted(){
+  },
+  data(){
+    return {
+      user: AUTH.user,
+      config: CONFIG,
+      errorMessage: null,
+      newMessageInput: null,
+      prevNewMessageIndex: null
+    }
+  },
+  props: ['messengerGroupId'],
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    },
+    newmessage(){
+      if(this.newMessageInput !== '' || this.newMessageInput !== null){
+        let parameter = {
+          messenger_group_id: this.messengerGroupId,
+          message: this.newMessageInput,
+          account_id: this.user.userID
+        }
+        this.APIRequest('messenger_messages/create', parameter).then(response => {
+          if(response.data > 0){
+            this.newMessageInput = null
+            this.$parent.retrieve()
+          }
+        })
+      }
+    }
+  }
+}
+</script>

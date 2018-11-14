@@ -486,6 +486,13 @@ Route::post('/messenger_groups/update', "MessengerGroupController@update");
 Route::post('/messenger_groups/delete', "MessengerGroupController@delete");
 Route::get('/messenger_groups/test', 'MessengerGroupController@test');
 
+//Messenger Controller
+Route::post('/messenger_messages/create', "MessengerMessageController@create");
+Route::post('/messenger_messages/retrieve', "MessengerMessageController@retrieve");
+Route::post('/messenger_messages/update', "MessengerMessageController@update");
+Route::post('/messenger_messages/delete', "MessengerMessageController@delete");
+Route::get('/messenger_messages/test', 'MessengerMessageController@test');
+
 //Product Controller
 Route::post('/products/create', "ProductController@create");
 Route::post('/products/retrieve', "ProductController@retrieve");
