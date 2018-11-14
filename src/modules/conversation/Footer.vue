@@ -2,7 +2,7 @@
   <div class="holder">
     <textarea type="text" class="form-control" placeholder="New Message..." v-model="newMessageInput" @keyup.enter="newmessage(id)">
     </textarea>
-    <button type="button" class="btn btn-primary" @click="newmessage(id)">Send</button>
+    <button type="button" class="btn btn-primary" @click="newmessage()">Send</button>
   </div>
 </template>
 <script>
@@ -21,35 +21,22 @@ export default {
       prevNewMessageIndex: null
     }
   },
-  props: ['params'],
+  props: ['messengerGroupId'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
-    retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
-      }
-      this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
-        this.data = response.data
-      })
-    },
-    newmessage(id){
+    newmessage(){
       if(this.newMessageInput !== '' || this.newMessageInput !== null){
         let parameter = {
-          payload: 'event',
-          payload_value: id,
-          account_id: this.user.userID,
-          text: this.newMessageInput
+          messenger_group_id: this.messengerGroupId,
+          message: this.newMessageInput,
+          account_id: this.user.userID
         }
-        this.APIRequest('messenger_groups/create', parameter).then(response => {
+        this.APIRequest('messenger_messages/create', parameter).then(response => {
           if(response.data > 0){
-            this.prevNewMessageIndex = null
-            this.retrieve()
+            this.newMessageInput = null
+            this.$parent.retrieve()
           }
         })
       }

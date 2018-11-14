@@ -1,7 +1,7 @@
 <template>
   <div class="holder">
     <div class="conversation">
-      <conversation :group="groups[selectedIndex]" v-if="groups !== null"></conversation>   
+      <conversation></conversation>   
     </div>
     <div class="users">
       <groups :groups="groups" v-if="groups !== null"></groups>
@@ -48,7 +48,14 @@ export default {
       }
     },
     retrieve(){
-      this.APIRequest('messenger_groups/retrieve', {}).then(response => {
+      let parameter = {
+        condition: [{
+          value: this.user.userID,
+          column: 'account_id',
+          clause: '='
+        }]
+      }
+      this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.groups = response.data
         }else{
@@ -56,8 +63,13 @@ export default {
         }
       })
     },
-    selectedGroup(id){
-      this.selectedIndex = id
+    selectedGroup(index){
+      for (var i = 0; i < this.$children.length; i++) {
+        if(this.$children[i].$el.id === 'groupConversation'){
+          this.$children[i].group = this.groups[index]
+          this.$children[i].retrieve()
+        }
+      }
     }
   }
 }

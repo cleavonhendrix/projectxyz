@@ -2,7 +2,10 @@
   <div class="holder" @click="selected(index)">
 <!--     <img :src="config.BACKEND_URL + item.account_profile.profile_url" class="profile" v-if="item.account_profile !== null">
     <i class="fa fa-user-circle-o" v-else></i> -->
-    <label>{{group.title}}</label>
+    <label>{{group.title}}
+      <span class="badge badge-primary">{{group.total_members}}</span>
+    </label>
+    
   </div>
 </template>
 <style scoped>
@@ -15,7 +18,7 @@
 .profile{
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+  border-radius: 50%; 
   float: left;
 
 }

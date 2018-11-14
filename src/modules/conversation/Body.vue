@@ -1,66 +1,23 @@
 <template>
   <div class="holder">
-    <div class="profile-icon">
-      <div class="left-template">
-      <img :src="config.BACKEND_URL + user.profile.profile_url" class="profile pull-left" v-if="user.profile !== null">
-       <i class="fa fa-user-circle-o" v-else></i>
+    <div class="profile-icon" v-for="conversation, index in conversations" v-if="conversations !== null">
+      <div class="left-template" v-if="user.userID !== conversation.account_id">
+      <!-- <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null"> -->
+       <i class="fa fa-user-circle-o"></i>
        <label class="content" >
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-         proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-         proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-         proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        {{conversation.message}}
        </label>
       </div>
-      <div class="right-template">
+      <div class="right-template" v-else>
        <label class="content">
-         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-         quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-         consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-         cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-         proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        {{conversation.message}}
        </label>
-       <img :src="config.BACKEND_URL + user.profile.profile_url" class="profile pull-right" v-if="user.profile !== null">
-       <i class="fa fa-user-circle-o pull-right" v-else></i>
+       <!-- <img :src="config.BACKEND_URL + cconversation.account.profile.profile_url" class="profile pull-right" v-if="conversation.account.profile !== null && conversation.account !== null"> -->
+       <i class="fa fa-user-circle-o pull-right"></i>
       </div>
       </div>
   </div>
 </template>
-<script>
-import ROUTER from '../../router'
-import AUTH from '../../services/auth'
-import CONFIG from '../../config.js'
-export default {
-  mounted(){
-  },
-  data(){
-    return {
-      user: AUTH.user,
-      config: CONFIG
-    }
-  },
-  props: ['params'],
-  methods: {
-    redirect(parameter){
-      ROUTER.push(parameter)
-    }
-  }
-}
-</script>
 <style scoped>
 .holder{
   width: 100%;
@@ -116,3 +73,24 @@ export default {
 .holder::-webkit-scrollbar { width: 0; }
 
 </style>
+<script>
+import ROUTER from '../../router'
+import AUTH from '../../services/auth'
+import CONFIG from '../../config.js'
+export default {
+  mounted(){
+  },
+  data(){
+    return {
+      user: AUTH.user,
+      config: CONFIG
+    }
+  },
+  props: ['conversations'],
+  methods: {
+    redirect(parameter){
+      ROUTER.push(parameter)
+    }
+  }
+}
+</script>
