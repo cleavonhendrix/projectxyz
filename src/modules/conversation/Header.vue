@@ -1,8 +1,8 @@
 <template>
-  <div class="holder">
-    <img :src="config.BACKEND_URL + user.profile.profile_url" class="profile" v-if="user.profile !== null">
-    <i class="fa fa-user-circle-o" v-else></i>
-    <label>{{user.username}}</label>
+  <div class="holder" v-if="group !== null">
+<!--     <img :src="config.BACKEND_URL + user.account_profile.profile_url" class="profile" v-if="user.account_profile !== null">
+    <i class="fa fa-user-circle-o" v-else></i> -->
+    <label>{{group.title}}</label>
   </div>
 </template>
 <script>
@@ -14,11 +14,10 @@ export default {
   },
   data(){
     return {
-      user: AUTH.user,
       config: CONFIG
     }
   },
-  props: ['params'],
+  props: ['group'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

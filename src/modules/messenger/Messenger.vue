@@ -1,10 +1,10 @@
 <template>
   <div class="holder">
     <div class="conversation">
-      <conversation></conversation>   
+      <conversation :group="groups[selectedIndex]" v-if="groups !== null"></conversation>   
     </div>
     <div class="users">
-      <userlist></userlist>
+      <groups :groups="groups" v-if="groups !== null"></groups>
     </div>
   </div>
 </template>
@@ -22,13 +22,15 @@ export default {
       user: AUTH.user,
       config: CONFIG,
       newTitle: null,
-      data: null
+      data: null,
+      groups: null,
+      selectedIndex: 0
     }
   },
   props: ['params'],
   components: {
     'conversation': require('modules/conversation/Conversation.vue'),
-    'userlist': require('modules/userlist/Messages.vue')
+    'groups': require('modules/userlist/Groups.vue')
   },
   methods: {
     redirect(parameter){
@@ -46,16 +48,16 @@ export default {
       }
     },
     retrieve(){
-      let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
-      }
-      this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
-        this.data = response.data
+      this.APIRequest('messenger_groups/retrieve', {}).then(response => {
+        if(response.data.length > 0){
+          this.groups = response.data
+        }else{
+          this.groups = null
+        }
       })
+    },
+    selectedGroup(id){
+      this.selectedIndex = id
     }
   }
 }

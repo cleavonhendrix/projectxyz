@@ -1,6 +1,6 @@
 <template>
   <div class="holder">
-    <c-header></c-header>
+    <c-header :group="group"></c-header>
     <c-body></c-body>
     <c-footer></c-footer>
   </div>
@@ -15,11 +15,10 @@ export default {
   },
   data(){
     return {
-      user: AUTH.user,
       config: CONFIG
     }
   },
-  props: ['params'],
+  props: ['group'],
   components: {
     'c-header': require('modules/conversation/Header.vue'),
     'c-body': require('modules/conversation/Body.vue'),

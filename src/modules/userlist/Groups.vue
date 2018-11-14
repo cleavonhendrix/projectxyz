@@ -1,6 +1,6 @@
 <template>
   <div class="holder">
-    <m-users></m-users>
+    <m-card v-for="group, index in groups" :key="group.id" :group="group" :index="index"></m-card>
     <m-options></m-options>
   </div>
 </template>
@@ -10,22 +10,23 @@ import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
-  mounted(){
-  },
   data(){
     return {
       user: AUTH.user,
       config: CONFIG
     }
   },
-  props: ['params'],
+  props: ['groups'],
   components: {
-    'm-users': require('modules/userlist/Card.vue'),
+    'm-card': require('modules/userlist/Card.vue'),
     'm-options': require('modules/userlist/OtherOptions.vue')
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    makeActive(selectedIndex){
+      this.$parent.selectedGroup(selectedIndex)
     }
   }
 }
