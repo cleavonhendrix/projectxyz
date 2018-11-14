@@ -1,8 +1,10 @@
 <template>
   <div class="holder">
-    <textarea type="text" class="form-control" placeholder="New Message..." v-model="newMessageInput" @keyup.enter="newmessage(id)">
+    <textarea type="text" class="form-control" placeholder="Type your message here..." v-model="newMessageInput" @keyup.enter="newmessage()">
     </textarea>
-    <button type="button" class="btn btn-primary" @click="newmessage()">Send</button>
+    <span>
+      <i class="fa fa-reply" @click="newmessage()"></i>
+    </span>
   </div>
 </template>
 <style scoped>
@@ -30,11 +32,23 @@
 }
 
 .form-control{
-  padding: 10px;
-  margin: 10px;
-  width: 85%;
-  height: 10vh;
-  resize: none;
+  width: 90% !important;
+  float: left !important;
+  height: 45px !important;
+}
+span{
+  width: 10%;
+  float: left;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+}
+span i{
+  font-size: 24px;
+}
+span i:hover{
+  cursor: pointer;
+  color: #3f0050;
 }
 
 </style>
