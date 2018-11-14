@@ -8,6 +8,33 @@
     </div>
   </div>
 </template>
+<style scoped>
+.holder{
+  width: 100%;
+  float: left;
+}
+.conversation{
+  width: 70%;
+  float: left;
+  min-height: 500px;
+  overflow-y:hidden;
+}
+.users{
+  width: 30%;
+  float: left;
+  height: 90vh; 
+  padding: 2px;
+  overflow-y:hidden;
+}
+@media (max-width: 992px){
+  .users{
+    display: none;
+  }
+  .conversation{
+    width: 100%;
+  }
+}
+</style>
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
@@ -74,22 +101,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.holder{
-  width: 100%;
-  float: left;
-}
-.conversation{
-  width: 70%;
-  float: left;
-  min-height: 500px;
-  overflow-y:hidden;
-}
-.users{
-  width: 30%;
-  float: left;
-  height: 90vh; 
-  padding: 2px;
-  overflow-y:hidden;
-}
-</style>

@@ -5,6 +5,39 @@
     <button type="button" class="btn btn-primary" @click="newmessage()">Send</button>
   </div>
 </template>
+<style scoped>
+.holder{
+  width: 100%;
+  float: left;
+  height: 15vh;
+}
+.profile{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  float: left;
+}
+
+.btn{
+  width: 10%;
+  padding: 5px;
+  float: right;
+  height: 45px;
+  position: relative;
+  bottom: 60px;
+  right: 13px;
+  text-align: center;
+}
+
+.form-control{
+  padding: 10px;
+  margin: 10px;
+  width: 85%;
+  height: 10vh;
+  resize: none;
+}
+
+</style>
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
@@ -44,36 +77,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.holder{
-  width: 100%;
-  float: left;
-  height: 15vh;
-}
-.profile{
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  float: left;
-}
-
-.btn{
-  width: 10%;
-  padding: 5px;
-  float: right;
-  height: 45px;
-  position: relative;
-  bottom: 60px;
-  right: 13px;
-  text-align: center;
-}
-
-.form-control{
-  padding: 10px;
-  margin: 10px;
-  width: 85%;
-  height: 10vh;
-  resize: none;
-}
-
-</style>
