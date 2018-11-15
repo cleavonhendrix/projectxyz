@@ -1,31 +1,5 @@
 <template>
-  <div class="holder">
-    <table class="table">
-
-      <thead>
-       
-        <tr>
-          <td>ID</td>
-          <td>Title</td>
-          <td>Description</td>
-          <td>SKU</td>
-          <td>Status</td>
-        </tr>
-      </thead>
-
-
-
-      <tbody>
-        <tr v-for="item, index in data" v-if="data !== null">
-          <td>{{item.id}}</td>
-          <td>{{item.title}}</td>
-          <td>{{item.description}}</td>
-          <td>{{item.sku}}</td>
-          <td>{{item.status}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+ 
 </template>
 <script>
 import ROUTER from '../../router'

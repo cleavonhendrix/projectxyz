@@ -1,7 +1,6 @@
 <template>
   <div>
-    <create-product></create-product>
-
+    <filters></filters>
     <products></products>
   </div>
 </template>
@@ -12,8 +11,8 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   components: {
-    'create-product': require('modules/product/Create.vue'),
-    'products': require('modules/product/Products.vue')
+    'products': require('modules/product/Products.vue'),
+    'filters': require('modules/MarketplaceHeader/Filters.vue')
   },
   mounted(){
   },
