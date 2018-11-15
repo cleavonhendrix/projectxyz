@@ -1,6 +1,8 @@
 <template>
   <div>
-      <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createProductModal"><i class="fa fa-plus"></i> New Product</button>
+
+
+      <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createProductModal"><i class="fa fa-plus"></i> Add New Product</button>
 
       <div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md" role="document">
