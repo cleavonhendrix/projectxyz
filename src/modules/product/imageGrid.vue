@@ -1,6 +1,7 @@
 <template>
-  <imageGrid></imageGrid>
+  <thumbnail></thumbnail>
 </template>
+
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
@@ -8,7 +9,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   components: {
-    'imageGrid': require('modules/product/imageGrid.vue')
+    'thumbnail': require('modules/product/thumbnail.vue')
   },
   mounted(){
     this.retrieve()
@@ -44,10 +45,14 @@ export default {
   }
 }
 </script>
-<style scoped>
-.holder{
-  width: 100%;
-  float: left;
-  margin-top: 20px;
+
+<style scooped>
+  .card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
 }
 </style>

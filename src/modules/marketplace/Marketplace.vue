@@ -1,6 +1,7 @@
 <template>
   <div>
     <filters></filters>
+    <br>
     <products></products>
   </div>
 </template>
