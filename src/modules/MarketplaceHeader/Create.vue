@@ -1,14 +1,12 @@
 <template>
   <div>
-
-
       <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#createProductModal"><i class="fa fa-plus"></i> Add New Product</button>
 
       <div class="modal fade" id="createProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary">
-            <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Sell something on <b><b>CLASS</b></b>WORX</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true" class="text-white">&times;</span>
             </button>
@@ -18,27 +16,57 @@
                 <label><b>Opps! </b>{{errorMessage}}</label>
             </span>
             <br v-if="errorMessage !== null">
-            <br>
             <div class="form-group">
-              <label for="exampleInputEmail1">Title</label>
-              <input type="text" class="form-control" v-model="newProduct.title" placeholder="Type title here...">
+              <input type="text" class="form-control" v-model="newProduct.title" placeholder="What are you selling?">
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">Description</label>
-              <textarea class="form-control" v-model="newProduct.description" placeholder="Type description here..." rows="5">
+              <input type="text" class="form-control" v-model="newProduct.price" placeholder="Price">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" v-model="newProduct.location" placeholder="Add Location">
+            </div>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary dropdown-toggle mr-sm-2" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Related College</button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">General</a>
+                  <div role="separator" class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Law</a>
+                  <a class="dropdown-item" href="#">Arts & Sciences</a>
+                  <a class="dropdown-item" href="#">Nursing</a>
+                  <a class="dropdown-item" href="#">Commerce</a>
+                  <a class="dropdown-item" href="#">Engineering</a>
+                  <a class="dropdown-item" href="#">Pharmacy</a>
+                  <a class="dropdown-item" href="#">Architecture & Fine Arts</a>
+                  <a class="dropdown-item" href="#">Education</a>
+                </div>
+              </div>
+              <input type="text" class="form-control my-2 my-sm-0" placeholder="Enter specific course or program (Optional)">
+            </div>
+
+            <div class="form-group">
+              <textarea class="form-control" v-model="newProduct.description" placeholder="Item description (optional)" rows="3">
               </textarea> 
             </div>
 
-            <div class="form-group">
-              <label for="exampleInputEmail1">SKU</label>
-              <input type="text" class="form-control" v-model="newProduct.sku" placeholder="Type sku here...">
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile" @change="onFileSelected">
+                <button class="btn btn-warning mr-sm-2" type="button" for="inputGroupFile">Choose Multiple Images
+                </button>
+              </div>
+              <div class="input-group-prepend">
+                <button class="btn btn-primary mr-sm-2" type="button">Upload Now</button>
+              </div>
             </div>
 
+
+
             <div class="form-group">
-              <label for="exampleInputEmail1">Status</label>
               <select v-model="newProduct.status" class="form-control">
-                <option value="not_verified">No need for verification</option>
-                <option value="verified">Need verification</option>
+                <option value="not_verified">Don't get verification</option>
+                <option value="verified">Get verification (takes longer to post)</option>
               </select>
             </div>
 
@@ -50,8 +78,6 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
@@ -79,6 +105,9 @@ export default {
   },
   props: ['params'],
   methods: {
+    onFileSelected(event){
+      console.log(event)
+    },
     redirect(parameter){
       ROUTER.push(parameter)
     },

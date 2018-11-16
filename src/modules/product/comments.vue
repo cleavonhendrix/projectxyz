@@ -1,15 +1,15 @@
 <template>
-  <imageGrid></imageGrid>
+  <button type="button" class="btn btn-secondary pull-right" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+  Comments
+</button>
 </template>
+
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'
 import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
-  components: {
-    'imageGrid': require('modules/product/imageGrid.vue')
-  },
   mounted(){
     this.retrieve()
   },
@@ -44,10 +44,14 @@ export default {
   }
 }
 </script>
-<style scoped>
-.holder{
-  width: 100%;
-  float: left;
-  margin-top: 20px;
+
+<style scooped>
+  .card-columns {
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
 }
 </style>
