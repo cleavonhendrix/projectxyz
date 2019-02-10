@@ -8,5 +8,8 @@ class ProductPriceController extends ClassWorxController
 {
     function __construct(){
       $this->model = new ProductPrice();
+      $this->notRequired = array(
+        'minimum', 'maximum'
+      );
     }
 }

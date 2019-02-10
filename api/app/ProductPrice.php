@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class ProductPrice extends APIModel
 {
     protected $table = 'product_prices';
-    protected $fillable = ['product_id', 'price'];
+    protected $fillable = ['account_id', 'product_id', 'type', 'price', 'minimum', 'maximum'];
 }

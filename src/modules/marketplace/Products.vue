@@ -1,16 +1,20 @@
 <template>
-  <div>
-    <div class="product-holder" v-for="i in 20" @click="redirect('marketplace/product/12312312')">
+  <div v-if="data !== null">
+    <div class="product-holder" v-for="item, index in data" @click="redirect('marketplace/product/' + item.code)">
       <div class="product-image">
-       <img src="../../assets/img/devices.png">
+       <img :src="config.BACKEND_URL + item.featured.url" v-if="item.featured !== null">
+       <i class="fa fa-image" v-else></i>
       </div>
       <div class="product-details">
         <div class="product-title">
-          <label style="padding-top: 5px;"><b>Sample Product</b></label>
-          <label>Best for sample product</label>
+          <label style="padding-top: 5px;"><b>{{item.title}}</b></label>
+          <label>{{item.description}}</label>
         </div>
         <div class="product-price">
-          PHP 100
+          <label v-if="item.price !== null">
+            <label v-if="item.price.length === 1">PHP {{item.price[0].price}}</label>
+            <label v-if="item.price.length > 1">PHP {{item.price[item.price.length - 1].price + ' - ' + item.price[0].price}}</label>
+          </label>
         </div>
       </div>
     </div>
@@ -37,12 +41,18 @@
     width: 100%;
     float: left;
     height: 250px;
+    text-align: center;
   }
 
   .product-image img{
     height: 250px;
     float: left;
     width: 100%;
+  }
+  .product-image .fa-image{
+    font-size: 150px;
+    line-height: 250px;
+
   }
   .product-details{
     height: 50px;
@@ -51,7 +61,7 @@
     border-top: solid 1px #ddd;
   }
   .product-title{
-    width: 75%;
+    width: 50%;
     float: left;
     height: 50px;
   }
@@ -63,11 +73,13 @@
     padding-left: 10px;
   }
   .product-price{
-    width: 25%;
+    width: 50%;
     float: left;
     height: 50px;
     line-height: 50px;
     font-weight: 600;
+    text-align: right;
+    padding-right: 5px;
   }
 
 </style>
@@ -83,14 +95,10 @@ export default {
     return {
       user: AUTH.user,
       config: CONFIG,
-      errorMessage: null,
-      data: null,
-      categoryValue: null,
-      searchValue: null
+      errorMessage: null
     }
   },
-  components: {
-  },
+  props: ['data'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)

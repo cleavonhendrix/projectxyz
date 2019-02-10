@@ -1,20 +1,21 @@
 <template>
   <div class="marketplace-holder">
-    <div class="bannerMarketplace text-white">
+    <div class="banner text-white">
       <h1>Welcome to Marketplace!</h1>
       <h3>We have all you need.</h3>
     </div>
 
     <div class="product-holder">
       <div class="listing">
-        <div class="filter">
+        <div class="filter" v-if="data !== null">
           <div class="input-group">
             <span class="input-group-addon">Search</span>
             <input type="text" class="form-control" v-model="searchValue" placeholder="Search here...">
           </div>
         </div>
         <div class="results">
-          <products></products>
+          <products v-if="data !== null" :data="data"></products>
+          <empty v-if="data === null" :title="'No products yet!'" :action="'Please be back soon.'" :icon="'far fa-smile'" :iconColor="'text-primary'"></empty>
         </div>
       </div>
     </div>
@@ -28,14 +29,13 @@
   overflow-y: hidden;
   margin-bottom: 50px;
 }
-.bannerMarketplace{
-  width: 99%;
+.banner{
+  width: 100%;
   float: left;
   min-height: 50px;
   overflow-y: hidden;
   padding: 20px;
   background: #ffaa81;
-  margin-right: 1%;
 }
 .product-holder{
   width: 100%;
@@ -50,11 +50,10 @@
   overflow-y: hidden;
 }
 .listing .filter{
-  width: 99%;
+  width: 100%;
   float: left;
   height: 50px;
   margin-top: 25px;
-  margin-right: 1%;
 }
 
 .form-control{
@@ -89,6 +88,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    this.retrieve()
   },
   data(){
     return {
@@ -100,11 +100,27 @@ export default {
     }
   },
   components: {
-    'products': require('modules/marketplace/Products.vue')
+    'products': require('modules/marketplace/Products.vue'),
+    'empty': require('modules/empty/EmptyDynamicIcon.vue')
   },
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    retrieve(){
+      let parameter = {
+        condition: [{
+          value: 'published',
+          column: 'status',
+          clause: '='
+        }],
+        account_id: this.user.userID
+      }
+      this.APIRequest('products/retrieve', parameter).then(response => {
+        if(response.data.length > 0){
+          this.data = response.data
+        }
+      })
     }
   }
 }

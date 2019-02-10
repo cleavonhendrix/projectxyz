@@ -1,33 +1,37 @@
 <template>
   <div class="system-body"> 
-     <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide + ' ' + toggleOnClick" id="ClassWorx" >
+     <div class="main-sidebar sidebar-collapse navbar-collapse collapse" v-bind:class="hide" id="Classworx" >
       <div class="sidebar">
         <ul class="sidebar-menu">
             <li class="header">
-                <span v-if="toggleSidebarFlag === true" class="profile-photo">
+                <span v-if="menuFlag === true" class="profile-photo">
                   <span class="profile-image-holder"  v-if="user.profile !== null">
                     <img v-bind:src="config.BACKEND_URL + user.profile.profile_url">
                   </span>
-                  <i class="fa fa-user-circle-o" v-else></i>
+                  <i class="fa fa-user-circle-o profile-icon" v-else></i>
+                  <i class="fas fa-check text-primary profile-status" v-if="user.status === 'VERIFIED'"></i>
                   Hi {{user.username}}!
                 </span>
                 <i v-bind:class="toggleSidebar + ' pull-right'" aria-hidden="true" v-on:click="changeToggleSidebarIcon()" id="toggleIcon"></i>
             </li>
-              <li v-for="(item,index) in menu" v-bind:class="{ appActive: isActive(item.id) }" v-on:click="setActive(item.id)" v-if="((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN'" data-toggle="collapse" data-target="#ClassWorx" aria-expanded="false" aria-label="Toggle navigation">
-                <a v-on:click="navigateTo(item.path, true)"  v-bind:class="hide">
-                  <i></i> 
-                  <span v-bind:class="'sm-title'" >{{item.description}}
-                  </span>
-                  <span v-bind:class="'pull-right-container'">  
-                    <i v-bind:class="item.icon + ' pull-right'"></i>
-                  </span>
-                </a>
-              </li>
+            <li v-for="item, index in menu" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActive(index)" v-if="(((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN') && menuFlag === true" class="menu-holder">
+              <i v-bind:class="item.icon" class=" visible"></i> 
+              <label>{{item.description}}</label>
+              <ul class="sub-menu" v-if="item.subMenu !== null">
+                <li v-for="itemSub, indexSub in item.subMenu" v-bind:class="{ 'active-menu': itemSub.flag === true }" v-on:click="setActiveSubMenu(index, indexSub)" v-if="((itemSub.users === user.type || itemSub.users === 'ALL') && itemSub.type !== 'ADMIN') || itemSub.type === 'ADMIN'">
+                  <i v-bind:class="itemSub.icon" class=" visible"></i>
+                  <label>{{itemSub.description}}</label>
+                </li>
+              </ul>
+            </li>
+            <li v-for="item, index in menuOff" v-bind:class="{ 'active-menu': item.flag === true }" v-on:click="setActiveOff(index)" v-if="(((item.users === user.type || item.users === 'ALL') && user.type !== 'ADMIN') || user.type === 'ADMIN') && menuFlag === false" class="menu-holder-hidden">
+              <i v-bind:class="item.icon"></i>
+            </li>
           </ul>
         </div>
       </div>
 
-           <!-- Confirmation Modal -->
+      <!-- Confirmation Modal -->
       <div class="modal" id="timerModal" v-if="confirmation.message !== null">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -45,8 +49,6 @@
         </div>
       </div>
 
-
-
       <div class="content-holder" v-bind:class="hide">
         <transition >
           <router-view ></router-view>
@@ -56,61 +58,43 @@
   </div>  
 </template>
 <style>
-
 .main-sidebar, .content-holder{  
-  min-height: 84.5vh;
+  min-height: 200px;
   overflow: hidden;
   transition: all 1s ease 0s;
   z-index: 1;
   margin-top: 50px;
 }
 .main-sidebar{
-  position: fixed;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
-.main-sidebar i{
-  padding:0 10px 0 10px;
+.sidebar-menu{
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
 }
+
 .sidebar-menu .header{
   font-weight: 700; 
   padding: 15px 2% 15px 2%;
   color: #000;
   text-align: center;
 }
-.sidebar-menu, .sidebar-menu  ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  color: #000;
-}
-.header .input-group{
-  width: 80%;
-  float: left;
-}
-.header .input-group div{
-  width: 15%;
-  float: left;
-  font-size: 10px;
-  padding: 0;
-  background: #fff !important;
-}
 
-.header .input-group div i{
-  padding: 0;
-  font-size: 12px;
-}
 .header .switch{
   float: left;
   width: 20%;
 }
+
 .header i{
   font-size: 24px;
-  color: #3f0050;
-  }/*-- toggle-sidebar i --*/
+  color: #22b173;
+}/*-- toggle-sidebar i --*/
+
 .header i:hover{
   cursor: pointer;
-  color: #6a0090;
+  color: #028170;
 }
 
 .profile-photo{
@@ -124,16 +108,16 @@
   width: 100%;
   float: left;
   height: 80px;
-  margin-bottom: 10px;
   text-align: center;
 }
+
 .profile-image-holder img{
   width: 80px;
   height: 80px;
-  border-radius: 50%;
+  border-radius: 5px;
 }
 
-.profile-photo i{
+.profile-photo .profile-icon{
   float: left;
   font-size: 80px;
   width: 100%;
@@ -141,45 +125,71 @@
   margin-bottom: 10px;
 }
 
+.profile-photo .profile-status{
+  font-size: 12px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
 
-/*-- .toggle-sidebar i:hover --*/
-.sidebar-menu li{
+.menu-holder{
+  width: 100%;
+  float: left;
   min-height: 40px;
-  overflow-x: hidden;
-  vertical-align: middle;
-  border-bottom: solid #eee 1px;
-}
-.sidebar-menu ul li{
-  min-height: 30px;
-  overflow-x: hidden;
-}
-.sidebar-menu li, .sidebar-menu ul > li {
-  position: relative;
-  margin: 0;
-  padding: 0;
+  line-height: 40px;
+  overflow: hidden;
 }
 
-/*padding: 13px 2% 13px 5%;*/
-.sidebar-menu  li > a{
-  display: block;
-  padding: 13px 2% 13px 2%;
+.menu-holder .visible{
+  width: 10%;
+  float: left;
+  text-align: right;
+  line-height: 40px;
 }
 
-/*padding: 10px 20px 10px 50px;*/
-.sidebar-menu  ul li > a{
-  padding: 10px 5% 10px 3%;
-  display: block;
+.menu-holder label{
+  float: left;
+  width: 86%;
+  margin-left: 4%;
+  line-height: 40px;
 }
-.sidebar-menu li > a:hover,.sidebar-menu ul li > a :hover{
-    cursor: pointer;
-    background: #eaeaea;
-}
-.appActive, .appSubActive{
-  background: #eaeaea;
-}/*-- app-active --*/
 
-.appActive ul{
-  background: #f4f4f4;
+.menu-holder:hover, .menu-holder i:hover, .menu-holder label:hover, .menu-holder-hidden i:hover{
+  cursor: pointer;
+  color: #22b173;
+}
+
+.sub-menu{
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  z-index: 1;
+}
+
+.sub-menu li{
+  width: 95%;
+  float: left;
+  height: 35px;
+  line-height: 35px;
+  margin-left: 5%;
+  color: #212529;
+}
+
+.active-menu{
+  color: #22b173 !important;
+}
+
+.menu-holder-hidden{
+  width: 100%;
+  float: left;
+  min-height: 50px;
+  line-height: 50px;
+  overflow: hidden;
+  text-align: right;
+}
+
+.menu-holder-hidden i{
+  font-size: 20px;
+  padding-right: 5px;
 }
 
 /*---------------------------------------------------------          
@@ -200,17 +210,17 @@
     display: block;
   }
   .content-holder{
-    width: 79%;
-    margin: 60px 1% 0 19%;
+    width: 81%;
+    margin: 60px 0px 0px 0px;
     float: left;
   }
   /*  Change with Menu Toggled */
   .main-sidebar.hidden{
-    margin-left: -14%;
+    width: 5%;
   }
   .content-holder.hidden{
-    width: 92%;
-    margin: 60px 2% 0 6%;
+    width: 94%;
+    margin: 60px 0px 0px 1%;
     float: left;
   }
 }
@@ -222,8 +232,8 @@
     float: left;
   }
   .content-holder{
-    width: 71%;
-    margin: 60px 2% 0 25%;
+    width: 72%;
+    margin: 60px 0px 0px 0px;
     float: left;
   }
   .main-sidebar.active{
@@ -238,11 +248,11 @@
 
   /*  Change with Menu Toggled */
   .main-sidebar.hidden{
-    margin-left: -18%;
+    width: 5%;
   }
   .content-holder.hidden{
-    width: 92%;
-    margin: 60px 2% 0 6%;
+    width: 94%;
+    margin: 60px 0px 0px 1%;
     float: left;
   }
 }
@@ -293,8 +303,8 @@
     margin-top: 50px;
   }
   .content-holder{
-    width: 10px;
-    min-width: 96%;
+    min-height: 10px;
+    width: 96%;
     overflow-y: hidden;
     margin: 60px 2% 0 2%;
     float: left;
@@ -302,7 +312,7 @@
   .main-sidebar ul{
     background: #fff;
     width: 90%;
-    min-height: 84.5vh;
+    min-height: 400px;
   }
    .sm-title{
     text-align: center;
@@ -312,7 +322,7 @@
     display: none;
   }
   .main-sidebar.hidden{
-    margin-left: 0;
+    
   }
   .header .input-group{
     width: 90%;
@@ -371,7 +381,7 @@
     display: none;
   }
   .main-sidebar.hidden{
-    margin-left: 0;
+    
   }
   .header .input-group{
     width: 90%;
@@ -397,16 +407,14 @@ export default {
     return{
       user: AUTH.user,
       config: CONFIG,
-      activeItem: '',
-      activeSubItem: '',
       menu: [
       // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
       // {id: 2, users: 'TEACHER', parent_id: 0, description: 'Guide', icon: 'fa fa-info', path: 'guide/ft'},
       // {id: 3, users: 'STUDENT', parent_id: 0, description: 'Guide', icon: 'fa fa-info', path: 'guide/fs'},
-      {id: 4, users: 'ALL', parent_id: 0, description: 'Discussions', icon: 'fas fa-comments', path: 'discussions'},
-      {id: 5, users: 'ADMIN', parent_id: 0, description: 'Reported Users', icon: 'fas fa-eye', path: 'discussion_reports'},
-      {id: 20, users: 'TEACHER', parent_id: 0, description: 'Semesters', icon: 'fa fa-sitemap', path: 'semesters'},
-      {id: 21, users: 'TEACHER', parent_id: 0, description: 'Courses', icon: 'fa fa-code-fork', path: 'courses'},
+      {users: 'ALL', description: 'Discussions', icon: 'fas fa-comments', path: 'discussions', flag: true, subMenu: null},
+      {users: 'ADMIN', description: 'Reported Users', icon: 'fas fa-eye', path: 'discussion_reports', flag: false, subMenu: null},
+      {users: 'TEACHER', description: 'Semesters', icon: 'fa fa-sitemap', path: 'semesters', flag: false, subMenu: null},
+      {users: 'TEACHER', description: 'Courses', icon: 'fa fa-code-fork', path: 'courses', flag: false, subMenu: null},
       // {id: 23, users: 'TEACHER', parent_id: 0, description: 'Announcements', icon: 'far fa-paper-plane', path: 'announcements/ft'},
       // {id: 24, users: 'TEACHER', parent_id: 0, description: 'Attendance', icon: 'far fa-clock-o', path: 'attendance/ft'},
       // {id: 25, users: 'TEACHER', parent_id: 0, description: 'Calendar', icon: 'fa fa-calendar', path: 'calendar/default'},
@@ -414,84 +422,128 @@ export default {
       // {id: 26, users: 'TEACHER', parent_id: 0, description: 'Tests', icon: 'fa fa-file-text-o', path: 'tests/ft/default'},
       // {id: 27, users: 'TEACHER', parent_id: 0, description: 'Resources', icon: 'fa fa-files-o', path: 'resources/ft/default'},
       // {id: 30, users: 'STUDENT', parent_id: 0, description: ' My Announcements', icon: 'far fa-paper-plane', path: 'announcements/fs'},
-      {id: 31, users: 'STUDENT', parent_id: 0, description: 'My Courses', icon: 'fa fa-clipboard', path: 'courses/en'},
+      {users: 'STUDENT', description: 'My Courses', icon: 'fa fa-clipboard', path: 'courses/en', flag: false, subMenu: null},
       // {id: 32, users: 'STUDENT', parent_id: 0, description: 'My Tests', icon: 'fa fa-file-text-o', path: 'tests/fs/default'},
       // {id: 33, users: 'STUDENT', parent_id: 0, description: 'My Resources', icon: 'fa fa-file-text-o', path: 'resources/fs'},
       // {id: 90, users: 'STUDENT', parent_id: 0, description: 'Reports', icon: 'fa fa-line-chart', path: 'reports/fs'},
       // {id: 91, users: 'TEACHER', parent_id: 0, description: 'Reports', icon: 'fa fa-line-chart', path: 'reports/ft'},
       // {id: 90, users: 'ALL', parent_id: 0, description: 'Planner', icon: 'fas fa-tasks', path: 'planner'},
       // {id: 91, users: 'ALL', parent_id: 0, description: 'Calendar', icon: 'fa fa-calendar', path: 'calendar'},
-      {id: 100, users: 'ALL', parent_id: 0, description: 'Organizations', icon: 'fas fa-users', path: 'organizations'},
-      {id: 110, users: 'ALL', parent_id: 0, description: 'Marketplace', icon: 'fas fa-shopping-cart', path: 'marketplace'},
-      {id: 120, users: 'ALL', parent_id: 0, description: 'Messenger', icon: 'fas fa-envelope', path: 'messenger'},
-      {id: 125, users: 'ALL', parent_id: 0, description: 'Webrtc', icon: 'fas fa-video', path: 'webrtc'},
-      {id: 150, users: 'ALL', parent_id: 0, description: 'Account Settings', icon: 'fa fa-cog', path: 'account_settings'},
-      {id: 200, users: 'ADMIN', parent_id: 0, description: 'Accounts', icon: 'fa fa-users', path: 'accounts'}
+      {users: 'ALL', description: 'Organizations', icon: 'fas fa-users', path: 'organizations', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Marketplace', icon: 'fas fa-shopping-cart', path: 'marketplace', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Messenger', icon: 'fas fa-envelope', path: 'messenger', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Webrtc', icon: 'fas fa-video', path: 'webrtc', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Account Settings', icon: 'fa fa-cog', path: 'account_settings', flag: false, subMenu: null},
+      {users: 'ADMIN', description: 'Accounts', icon: 'fa fa-users', path: 'accounts', flag: false, subMenu: null}
+      ],
+      menuOff: [
+      // {id: 1, users: 'ALL', parent_id: 0, description: 'Dashboard', icon: 'fa fa-tachometer', path: 'dashboard'},
+      // {id: 2, users: 'TEACHER', parent_id: 0, description: 'Guide', icon: 'fa fa-info', path: 'guide/ft'},
+      // {id: 3, users: 'STUDENT', parent_id: 0, description: 'Guide', icon: 'fa fa-info', path: 'guide/fs'},
+      {users: 'ALL', description: 'Discussions', icon: 'fas fa-comments', path: 'discussions', flag: true, subMenu: null},
+      {users: 'ADMIN', description: 'Reported Users', icon: 'fas fa-eye', path: 'discussion_reports', flag: false, subMenu: null},
+      {users: 'TEACHER', description: 'Semesters', icon: 'fa fa-sitemap', path: 'semesters', flag: false, subMenu: null},
+      {users: 'TEACHER', description: 'Courses', icon: 'fa fa-code-fork', path: 'courses', flag: false, subMenu: null},
+      // {id: 23, users: 'TEACHER', parent_id: 0, description: 'Announcements', icon: 'far fa-paper-plane', path: 'announcements/ft'},
+      // {id: 24, users: 'TEACHER', parent_id: 0, description: 'Attendance', icon: 'far fa-clock-o', path: 'attendance/ft'},
+      // {id: 25, users: 'TEACHER', parent_id: 0, description: 'Calendar', icon: 'fa fa-calendar', path: 'calendar/default'},
+      // {id: 25, users: 'TEACHER', parent_id: 0, description: 'Discussions', icon: 'fa fa-bullhorn', path: 'discussions/default'},
+      // {id: 26, users: 'TEACHER', parent_id: 0, description: 'Tests', icon: 'fa fa-file-text-o', path: 'tests/ft/default'},
+      // {id: 27, users: 'TEACHER', parent_id: 0, description: 'Resources', icon: 'fa fa-files-o', path: 'resources/ft/default'},
+      // {id: 30, users: 'STUDENT', parent_id: 0, description: ' My Announcements', icon: 'far fa-paper-plane', path: 'announcements/fs'},
+      {users: 'STUDENT', description: 'My Courses', icon: 'fa fa-clipboard', path: 'courses/en', flag: false, subMenu: null},
+      // {id: 32, users: 'STUDENT', parent_id: 0, description: 'My Tests', icon: 'fa fa-file-text-o', path: 'tests/fs/default'},
+      // {id: 33, users: 'STUDENT', parent_id: 0, description: 'My Resources', icon: 'fa fa-file-text-o', path: 'resources/fs'},
+      // {id: 90, users: 'STUDENT', parent_id: 0, description: 'Reports', icon: 'fa fa-line-chart', path: 'reports/fs'},
+      // {id: 91, users: 'TEACHER', parent_id: 0, description: 'Reports', icon: 'fa fa-line-chart', path: 'reports/ft'},
+      // {id: 90, users: 'ALL', parent_id: 0, description: 'Planner', icon: 'fas fa-tasks', path: 'planner'},
+      // {id: 91, users: 'ALL', parent_id: 0, description: 'Calendar', icon: 'fa fa-calendar', path: 'calendar'},
+      {users: 'ALL', description: 'Organizations', icon: 'fas fa-users', path: 'organizations', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Marketplace', icon: 'fas fa-shopping-cart', path: 'marketplace', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Messenger', icon: 'fas fa-envelope', path: 'messenger', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Webrtc', icon: 'fas fa-video', path: 'webrtc', flag: false, subMenu: null},
+      {users: 'ALL', description: 'Account Settings', icon: 'fa fa-cog', path: 'account_settings', flag: false, subMenu: null},
+      {users: 'ADMIN', description: 'Accounts', icon: 'fa fa-users', path: 'accounts', flag: false, subMenu: null}
       ],
       toggleSidebar: 'fa fa-toggle-on',
-      toggleSidebarFlag: true,
       hide: '',
-      toggleOnClick: '',
-      alignAtHide: 'pull-right',
-      search: '',
       flag: false,
       confirmation: {
         message: null,
         action: null
-      }
+      },
+      prevMenu: 0,
+      subPrevMenu: 0,
+      menuFlag: true
     }
   },
   methods: {
-    getMenu(){
-      let parameter = {
-        'sort': {
-          'id': 'asc'
+    setActive(index){
+      if(this.prevMenu !== index){
+        this.menu[this.prevMenu].flag = false
+        this.menu[index].flag = true
+        if(this.menu[this.prevMenu].subMenu !== null){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+        }
+        this.prevMenu = index
+      }
+      if(this.menu[index].subMenu === null){
+        ROUTER.push('/' + this.menu[this.prevMenu].path)
+        $('.navbar-collapse').collapse('hide')
+      }
+    },
+    setActiveOff(index){
+      if(this.prevMenu !== index){
+        this.menuOff[this.prevMenu].flag = false
+        this.menuOff[index].flag = true
+        this.prevMenu = index
+      }
+      if(this.menuOff[index].subMenu === null){
+        ROUTER.push('/' + this.menuOff[this.prevMenu].path)
+        $('.navbar-collapse').collapse('hide')
+      }
+    },
+    setActiveSubMenu(index, subIndex){
+      if(this.prevMenu !== index){
+        this.menu[this.prevMenu].flag = false
+        this.menu[index].flag = true
+        if(this.menu[index].subMenu !== null){
+          this.menu[index].subMenu[subIndex].flag = true
+        }
+        if(this.menu[this.prevMenu].subMenu !== null){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+        }
+        this.prevMenu = index
+        this.subPrevMenu = subIndex
+      }else{
+        if(this.subPrevMenu !== subIndex){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+          this.menu[index].subMenu[subIndex].flag = true
+          this.subPrevMenu = subIndex
+        }else{
+          this.subPrevMenu = subIndex
         }
       }
-      this.APIRequest('modules/retrieve', parameter).then(response => {
-        this.menu = response.data
-      })
-    },
-    isActive(menuItem){
-      return this.activeItem === menuItem
-    },
-    setActive(menuItem){
-      this.activeItem = menuItem
-      var intMenu = parseInt(menuItem)
-      var intSubMenu = parseInt(this.activeSubItem)
-      this.activeSubItem = (intSubMenu < (intMenu + 10) && intSubMenu > intMenu) ? this.activeSubItem : ''
-    },
-    isSubActive(menuItem){
-      return this.activeSubItem === menuItem
-    },
-    setSubActive(menuItem){
-      this.activeSubItem = menuItem
-      this.activeItem = ''
-    },
-    navigateTo(method, toggleCondition){
-      if(AUTH.timer.interval === null){
-        this.confirmation.message = null
-        this.toggleOnClick = (toggleCondition === true) ? 'collapse' : ''
-        ROUTER.push('/' + method)
-      }else{
-        this.confirmation.message = 'You have an ongoing examination. You are not allowed to cancel the examination.'
-        $('#timerModal').modal('show')
-      }
+      ROUTER.push('/' + this.menu[this.prevMenu].subMenu[this.subPrevMenu].path)
+      $('.navbar-collapse').collapse('hide')
     },
     changeToggleSidebarIcon(){
-      this.toggleSidebarFlag = !this.toggleSidebarFlag
-      this.hide = (this.toggleSidebarFlag === true) ? '' : 'hidden'
-      this.alignAtHide = (this.toggleSidebarFlag === false) ? 'text-center' : 'pull-right'
-      var icon = (this.toggleSidebarFlag === true) ? 'on' : 'off'
-      this.toggleSidebar = 'fa fa-toggle-' + icon
-    }
-  },
-  computed: {
-    filteredModules: function(){
-      let regex = new RegExp(this.search.toLowerCase())
-      return this.menu.filter((menu) => {
-        return menu.description.toLowerCase().match(regex)
-      })
+      if(this.menuFlag === false){
+        // from off
+        this.menuOff[this.prevMenu].flag = false
+        this.prevMenu = 0
+      }else{
+        // from on
+        this.menu[this.prevMenu].flag = false
+        if(this.menu[this.prevMenu].subMenu !== null){
+          this.menu[this.prevMenu].subMenu[this.subPrevMenu].flag = false
+        }
+        this.prevMenu = 0
+        this.subPrevMenu = 0
+      }
+      this.menuFlag = !this.menuFlag
+      this.toggleSidebar = (this.menuFlag === false) ? 'fa fa-toggle-off' : 'fa fa-toggle-on'
+      this.hide = (this.menuFlag === false) ? 'hidden' : ''
     }
   }
 }
