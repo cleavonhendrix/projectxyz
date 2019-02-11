@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\ProductPhoto;
 use App\ProductPrice;
+use App\ProductAttribute;
 use App\Checkout;
 use App\CheckoutItem;
 use App\Wishlist;

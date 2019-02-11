@@ -28,8 +28,8 @@
           <i class="fa fa-chevron-down show-prices" style="padding-left: 20px;" @click="showPrice(true)" v-if="data.price.length > 1 && priceFlag === false"></i>
           <i class="fa fa-chevron-up show-prices" style="padding-left: 20px;" @click="showPrice(false)" v-if="data.price.length > 1 && priceFlag === true"></i>
         </div>
-        <div class="product-row" v-if="data.price.length > 1 && priceFlag === true">
-          <table class="table table-bordered">
+        <div class="product-row" v-if="data.price !== null">
+          <table class="table table-bordered" v-if="data.price.length > 1 && priceFlag === true">
             <thead>
               <tr>
                 <td>Minimum</td>
@@ -339,6 +339,8 @@ export default {
       this.APIRequest('products/retrieve', parameter).then(response => {
         if(response.data.length > 0){
           this.data = response.data[0]
+        }else{
+          this.data = null
         }
       })
     },
