@@ -290,6 +290,30 @@ export default{
     meta: {
       tokenRequired: true
     }
+  },
+  {
+    path: '/checkout/',
+    name: 'checkout',
+    component: resolve => require(['modules/checkout/Checkouts.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/thankyou/:orderNumber',
+    name: 'thankyou',
+    component: resolve => require(['modules/checkout/ThankYou.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
+  },
+  {
+    path: '/profile/:parameter?',
+    name: 'profile',
+    component: resolve => require(['modules/account/Update.vue'], resolve),
+    meta: {
+      tokenRequired: true
+    }
   }
   ]
 }

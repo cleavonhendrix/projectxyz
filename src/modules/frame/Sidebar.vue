@@ -430,7 +430,8 @@ export default {
       // {id: 90, users: 'ALL', parent_id: 0, description: 'Planner', icon: 'fas fa-tasks', path: 'planner'},
       // {id: 91, users: 'ALL', parent_id: 0, description: 'Calendar', icon: 'fa fa-calendar', path: 'calendar'},
       {users: 'ALL', description: 'Organizations', icon: 'fas fa-users', path: 'organizations', flag: false, subMenu: null},
-      {users: 'ALL', description: 'Marketplace', icon: 'fas fa-shopping-cart', path: 'marketplace', flag: false, subMenu: null},
+        {users: 'ALL', description: 'Shop', icon: 'fas fa-store', path: 'marketplace', flag: false, subMenu: [{users: 'ALL', description: 'Marketplace', icon: 'fas fa-store', path: 'marketplace', flag: false}, {users: 'PARTNER', description: 'Products', icon: 'fa fa-shopping-cart', path: 'products', flag: false}, {users: 'PARTNER', description: 'Orders', icon: 'fa fa-file', path: 'orders', flag: false}, {users: 'PARTNER', description: 'Coupons', icon: 'fa fa-tags', path: 'coupons', flag: false}, {users: 'ALL', description: 'Wishlists', icon: 'fa fa-heart', path: 'wishlists', flag: false}]
+        },
       {users: 'ALL', description: 'Messenger', icon: 'fas fa-envelope', path: 'messenger', flag: false, subMenu: null},
       {users: 'ALL', description: 'Webrtc', icon: 'fas fa-video', path: 'webrtc', flag: false, subMenu: null},
       {users: 'ALL', description: 'Account Settings', icon: 'fa fa-cog', path: 'account_settings', flag: false, subMenu: null},

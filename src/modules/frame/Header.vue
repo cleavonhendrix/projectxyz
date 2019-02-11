@@ -58,12 +58,13 @@
                   </span>
                   <span class="account-info text-center">{{user.username}}</span>
                 </span>
-                <span class="dropdown-item dropdown-item-menu-title">
-                  <label>Profile</label>
-                </span>
-                <span class="dropdown-item" v-on:click="redirect('/account_settings')">
+                <span class="dropdown-item" v-on:click="redirect('/profile')">
                   <i class="fa fa-cog"></i>
-                  <label>Account Settings</label>
+                  <label>My Profile</label>
+                </span>
+                <span class="dropdown-item" v-on:click="redirect('/plan')">
+                  <i class="fa fa-tag"></i>
+                  <label>My Plan</label>
                 </span>
                 <span class="dropdown-item dropdown-item-menu-title">
                   <label>Documents</label>

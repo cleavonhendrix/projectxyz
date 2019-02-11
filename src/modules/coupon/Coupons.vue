@@ -5,23 +5,27 @@
       <table class="table table-bordered table-hover table-responsive" style="margin-top: 25px;">
         <thead>
           <tr>
-            <td>Title</td>
-            <td>Description</td>
-            <td>Price Range</td>
-            <td>Status</td>
+            <td><b>Code</b></td>
+            <td><b>Description</b></td>
+            <td><b>Type</b></td>
+            <td><b>Discount</b></td>
+            <td><b>Start Date</b></td>
+            <td><b>Expiry Date</b></td>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item, index in data" v-if="data !== null" @click="editModal(item)" class="item">
-            <td>{{item.title}}</td>
+            <td><b class="text-primary">{{item.code}}</b></td>
             <td>{{item.description}}</td>
-            <td></td>
-            <td>{{item.status}}</td>
+            <td>{{item.type.toUpperCase()}}</td>
+            <td>{{item.value}} <label v-if="item.type === 'percentage'">%</label></td>
+            <td>{{item.start}}</td>
+            <td>{{item.end}}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <empty v-if="data === null" :title="'Looks like you have not added a product!'" :action="'Click the New Product Button to get started.'"></empty>
+    <empty v-if="data === null" :title="'Looks like you have not added a coupons!'" :action="'Click the New Coupon Button to get started.'"></empty>
     <update></update>
 	</div>
 </template>
@@ -62,8 +66,8 @@ export default {
     }
   },
   components: {
-    'create': require('modules/product/Create.vue'),
-    'update': require('modules/product/Update.vue'),
+    'create': require('modules/coupon/Create.vue'),
+    'update': require('modules/coupon/Update.vue'),
     'empty': require('modules/empty/Empty.vue')
   },
   methods: {
@@ -76,11 +80,10 @@ export default {
           value: this.user.userID,
           column: 'account_id',
           clause: '='
-        }],
-        account_id: this.user.userID
+        }]
       }
       $('#loading').css({'display': 'block'})
-      this.APIRequest('products/retrieve', parameter).then(response => {
+      this.APIRequest('coupons/retrieve', parameter).then(response => {
         $('#loading').css({'display': 'none'})
         if(response.data.length > 0){
           this.data = response.data
@@ -91,7 +94,7 @@ export default {
     },
     editModal(item){
       for (var i = 0; i < this.$children.length; i++) {
-        if(this.$children[i].$el.id === 'updateProducts'){
+        if(this.$children[i].$el.id === 'updateCoupons'){
           this.$children[i].item = item
           this.$children[i].modal()
         }

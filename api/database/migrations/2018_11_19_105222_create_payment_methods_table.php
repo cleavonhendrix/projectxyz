@@ -18,7 +18,7 @@ class CreatePaymentMethodsTable extends Migration
             $table->bigInteger('account_id');
             $table->string('payload');
             $table->string('payload_value')->nullable();
-            $table->string('status';
+            $table->string('status');
             $table->timestamps();
             $table->softDeletes();
         });

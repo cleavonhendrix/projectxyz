@@ -36,6 +36,7 @@
   overflow-y: hidden;
   padding: 20px;
   background: #ffaa81;
+  margin-left: 0%;
 }
 .product-holder{
   width: 100%;
