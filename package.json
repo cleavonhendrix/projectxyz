@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "chart.js": "^2.7.2",
     "child_process": "^1.0.2",
+    "easy-countries-list": "^1.1.0",
     "font-awesome": "^4.7.0",
     "fs": "0.0.1-security",
     "googleapis": "^27.0.0",

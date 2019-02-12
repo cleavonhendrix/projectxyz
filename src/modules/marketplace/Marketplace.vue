@@ -111,7 +111,7 @@ export default {
     retrieve(){
       let parameter = {
         condition: [{
-          value: 'published',
+          value: 'approved',
           column: 'status',
           clause: '='
         }],

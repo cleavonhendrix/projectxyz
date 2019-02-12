@@ -1,19 +1,25 @@
 <template>
   <div class="holder">
     <div class="profile-icon" v-for="conversation, index in conversations" v-if="conversations !== null">
-      <div class="left-template" v-if="user.userID !== conversation.account_id">
-      <!-- <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null"> -->
-       <i class="fa fa-user-circle-o"></i>
-       <label class="content" >
-        {{conversation.message}}
-       </label>
+      <div class="left-template" v-if="user.userID !== parseInt(conversation.account_id)">
+        <span class="date">
+          {{conversation.created_at_human}}
+        </span>
+        <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-left" v-if="conversation.account.profile !== null && conversation.account !== null">
+        <i class="fa fa-user-circle-o pull-left" v-else></i>
+        <label class="content" >
+          {{conversation.message}}
+        </label>
       </div>
       <div class="right-template" v-else>
-       <label class="content">
-        {{conversation.message}}
-       </label>
-       <!-- <img :src="config.BACKEND_URL + cconversation.account.profile.profile_url" class="profile pull-right" v-if="conversation.account.profile !== null && conversation.account !== null"> -->
-       <i class="fa fa-user-circle-o pull-right"></i>
+        <span class="date">
+          {{conversation.created_at_human}}
+        </span>
+         <label class="content">
+          <bdi>{{conversation.message}}</bdi>
+         </label>
+         <img :src="config.BACKEND_URL + conversation.account.profile.profile_url" class="profile pull-right" v-if="conversation.account.profile !== null && conversation.account !== null">
+         <i class="fa fa-user-circle-o pull-right" v-else></i>
       </div>
       </div>
   </div>
@@ -22,7 +28,7 @@
 .holder{
   width: 100%;
   float: right;
-  height: 66vh;
+  height: 74vh;
   overflow-y: scroll;
 }
 .profile{
@@ -31,47 +37,52 @@
   border-radius: 50%;
 }
 .left-template{
-  border-top-right-radius: 10px;
-  border-top-left-radius: 30px;
-  border-bottom-right-radius: 10px;
-  width: 90%;
-  background: #eee;
-  color: black;
+  width: 60%;
   float: left;
+  margin-right: 40%;
   padding: 10px;
-  min-height: 100px;
+  min-height: 10px;
   overflow-y: hidden;
   margin-top: 10px;
-
+  text-align: justify;
 } 
 .right-template{
-  width: 90%;
+  width: 60%;
   float: right;
-  background: #0084ff;
-  color: #fff;
-  padding: 10px;
-  min-height: 100px;
+  min-height: 10px;
   overflow-y: hidden;
   margin-top: 10px;
-  border-top-right-radius: 30px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  margin-left: 40%;
+  text-align: justify;
+  direction: rtl;
 }
 
-.right-template:last-of-type {
-  border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 30px;
-}
 .content{
   float: left;
   padding-left: 10px;
-  width: 93%;
+  width: 90%;
+}
 
+.left-template .date, .right-template .date{
+  width: 100%;
+  height: 20px;
+  color: #aaa;
+  font-size: 12px;
+  float: left;
+  line-height: 20px;
+}
+.left-template .date{
+  padding-left: 8%;
+}
+.right-template .date{
+  padding-right: 10%;
+}
+
+.left-template i, .right-template i{
+  font-size: 25px;
+  line-height: 25px; 
 }
 .holder::-webkit-scrollbar { width: 0; }
-
 </style>
 <script>
 import ROUTER from '../../router'

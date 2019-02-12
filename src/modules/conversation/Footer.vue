@@ -3,7 +3,7 @@
     <textarea type="text" class="form-control" placeholder="Type your message here..." v-model="newMessageInput" @keyup.enter="newmessage()">
     </textarea>
     <span>
-      <i class="fa fa-reply" @click="newmessage()"></i>
+      <i class="fas fa-location-arrow" @click="newmessage()"></i>
     </span>
   </div>
 </template>
@@ -11,7 +11,9 @@
 .holder{
   width: 100%;
   float: left;
-  height: 15vh;
+  height: 8vh;
+  background: #22b173;
+  color: #fff;
 }
 .profile{
   width: 50px;
@@ -32,15 +34,17 @@
 }
 
 .form-control{
-  width: 90% !important;
+  width: 89% !important;
   float: left !important;
-  height: 45px !important;
+  height: 6vh !important;
+  margin-top: 1vh !important;
+  margin-left: 1% !important;
 }
 span{
   width: 10%;
   float: left;
   height: 45px;
-  line-height: 45px;
+  line-height: 8vh;
   text-align: center;
 }
 span i{
@@ -68,21 +72,35 @@ export default {
       prevNewMessageIndex: null
     }
   },
-  props: ['messengerGroupId'],
+  props: ['group'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
     },
     newmessage(){
-      if(this.newMessageInput !== '' || this.newMessageInput !== null){
+      if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.group.new === false){
         let parameter = {
-          messenger_group_id: this.messengerGroupId,
+          messenger_group_id: this.group.id,
           message: this.newMessageInput,
           account_id: this.user.userID
         }
         this.APIRequest('messenger_messages/create', parameter).then(response => {
           if(response.data > 0){
             this.newMessageInput = null
+            this.$parent.retrieve()
+          }
+        })
+      }else if((this.newMessageInput !== '' || this.newMessageInput !== null) && this.group.new === true){
+        let parameter = {
+          creator: this.user.userID,
+          message: this.newMessageInput,
+          member: this.group.id
+        }
+        this.APIRequest('messenger_groups/create', parameter).then(response => {
+          if(response.data !== null){
+            this.newMessageInput = null
+            this.$parent.group = response.data
+            this.$parent.newFlag = false
             this.$parent.retrieve()
           }
         })

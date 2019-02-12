@@ -24,11 +24,19 @@ export default {
     events: {
       data: null,
       current: null
+    },
+    messages: {
+      data: null,
+      current: 1,
+      prevCurrent: null
     }
   },
   timer: {
     interval: null,
     speed: 1000
+  },
+  messenger: {
+    flag: null
   },
   notifTimer: {
     timer: null,
@@ -125,6 +133,7 @@ export default {
           }
         })
         this.retrieveNotifications(userInfo.id)
+        this.retrieveMessages(userInfo.id, userInfo.account_type)
         this.retrieveEvents(userInfo.id)
         if(callback){
           callback(userInfo)
@@ -169,6 +178,7 @@ export default {
           }
         })
         this.retrieveNotifications(userInfo.id)
+        this.retrieveMessages(userInfo.id, userInfo.account_type)
         this.retrieveEvents(userInfo.id)
       }, (response) => {
         this.setToken(null)
@@ -191,8 +201,9 @@ export default {
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
+    this.clearMessenger()
     this.clearNotifTimer()
-    ROUTER.push('/')
+    this.tokenData.token = null
     ROUTER.go('/')
   },
   retrieveNotifications(accountId){
@@ -266,5 +277,33 @@ export default {
   setReports(description, courseId){
     this.reports.description = description
     this.reports.course_id = courseId
+  },
+  retrieveMessages(accountId, type){
+    let vue = new Vue()
+    let parameter = {
+      account_id: accountId,
+      account_type: type
+    }
+    vue.APIRequest('messenger_groups/retrieve_summary', parameter).then(response => {
+      this.user.messages.data = response.data
+    })
+  },
+  clearMessenger(){
+    if(this.messenger.flag !== null){
+      this.messenger.flag = null
+    }
+  },
+  redirect(path){
+    if(path.includes('messenger') === false){
+      this.clearMessenger()
+    }else{
+      this.messenger.flag = true
+    }
+    ROUTER.push(path)
+  },
+  checkPlan(){
+    // if(this.user.plan.title === 'Expired' && this.user.type !== 'ADMIN'){
+    //   ROUTER.push('/plan')
+    // }
   }
 }
