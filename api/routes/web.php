@@ -453,7 +453,10 @@ Route::get('/ratings/test', 'RatingController@test');
 
 //Messenger Controller
 Route::post('/messenger_groups/create', "MessengerGroupController@create");
+Route::post('/messenger_groups/create_new_issue', "MessengerGroupController@createNewIssue");
 Route::post('/messenger_groups/retrieve', "MessengerGroupController@retrieve");
+Route::post('/messenger_groups/retrieve_summary', "MessengerGroupController@retrieveSummary");
+Route::post('/messenger_groups/retrieve_my_issue', "MessengerGroupController@retrieveMyIssue");
 Route::post('/messenger_groups/update', "MessengerGroupController@update");
 Route::post('/messenger_groups/delete', "MessengerGroupController@delete");
 Route::get('/messenger_groups/test', 'MessengerGroupController@test');

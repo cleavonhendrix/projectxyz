@@ -4,6 +4,7 @@
       <div v-if="tokenData.verifyingToken === false && tokenData.token !== null">
        <system-header></system-header>
        <system-sidebar></system-sidebar>
+       <support-messenger></support-messenger>
       </div>
       <div v-else>
         <login-header></login-header>
@@ -64,7 +65,8 @@ export default {
     'landing-footer': () => import('modules/home/Landing/Footer.vue'),
     'privacy-policy': () => import('modules/docs/PrivacyPolicy.vue'),
     'terms-and-conditions': () => import('modules/docs/TermsAndConditions.vue'),
-    'guide': () => import('modules/guide/Guide.vue')
+    'guide': () => import('modules/guide/Guide.vue'),
+    'support-messenger': () => import('modules/support/Support.vue')
   }
 }
 </script>

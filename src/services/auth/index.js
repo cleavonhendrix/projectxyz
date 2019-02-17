@@ -30,6 +30,9 @@ export default {
     interval: null,
     speed: 1000
   },
+  messengerSupport: {
+    flag: null
+  },
   notifTimer: {
     timer: null,
     speed: 1000
@@ -192,6 +195,7 @@ export default {
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
     this.clearNotifTimer()
+    this.clearMessengerSuuport()
     ROUTER.push('/')
     ROUTER.go('/')
   },
@@ -248,6 +252,11 @@ export default {
     if(this.notifTimer.timer !== null){
       window.clearInterval(this.notifTimer.timer)
       this.notifTimer.timer = null
+    }
+  },
+  clearMessengerSuuport(){
+    if(this.messengerSupport.flag !== null){
+      this.messengerSupport.flag = null
     }
   },
   playNotificationSound(){
