@@ -96,6 +96,27 @@
             </span>
         </div>
 
+        <div class="dropdown" v-if="user.messages !== null"> 
+          <span class="nav-item" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false">
+            <span>
+              <i class="fas fa-envelope" style="font-size: 22px;margin-top: 2px;"></i>
+              <!-- <label class="badge badge-danger" style="margin-left: -15px;" v-if="parseInt(user.messages.current) > 0">{{user.messages.current}}</label> -->
+            </span>
+            <span class="dropdown-menu dropdown-menu-right dropdown-menu-notification" aria-labelledby="notifications">
+              <span class="notification-header" @click="redirect('/messenger')">
+                View Messages
+              </span>
+              <span class="notification-item" v-for="item, index in user.messages.data" v-if="user.messages.data !== null">
+                <span class="notification-title">
+                      {{item.title.username}}
+                </span>
+                <span class="notification-description">{{item.description}}</span>
+                <span class="notification-date">Posted on {{item.created_at_human}}</span>
+              </span>
+            </span>
+          </span>
+        </div>
+
         <div class="dropdown"> 
             <span class="nav-item" v-bind:class="{'active-menu': notifFlag === true}" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false" v-on:click="makeActive('notif'), updateNotif(user.notifications.data[0])" v-bind:onkeypress="makeActive('')" v-if="user.notifications.data !== null">
               <span>

@@ -1,15 +1,20 @@
 <template>
-  <div class="holder">
-    <div class="conversation">
-      <conversation></conversation>   
+  <div>
+    
+    <div class="messenger-holder" v-if="groups !== null || partners !== null">
+      <div class="conversation">
+        <conversation :groupId.sync="groupId" :group="selectedGroupData"></conversation>   
+      </div>
+      <div class="users">
+        <groups :groups="groups" :partners="partners" v-if="groups !== null || partners !== null"></groups>
+      </div>
     </div>
-    <div class="users">
-      <groups :groups="groups" v-if="groups !== null"></groups>
-    </div>
+
+    <empty v-if="groups === null && partners === null" :title="'You do not have conversation right now.'" :action="'Wait for your customer to message you.'"></empty>
   </div>
 </template>
 <style scoped>
-.holder{
+.messenger-holder{
   width: 100%;
   float: left;
 }
@@ -18,14 +23,18 @@
   float: left;
   min-height: 500px;
   overflow-y:hidden;
+  height: 90vh;
 }
 .users{
-  width: 30%;
+  width: 28%;
   float: left;
-  height: 90vh; 
-  padding: 2px;
-  overflow-y:hidden;
+  height: 90vh;
+  margin-left: 2%; 
+  overflow-y:scroll;
+  border-left: solid 1px #22b173;
 }
+
+.users::-webkit-scrollbar { width: 0; }
 @media (max-width: 992px){
   .users{
     display: none;
@@ -42,6 +51,7 @@ import CONFIG from '../../config.js'
 import axios from 'axios'
 export default {
   mounted(){
+    AUTH.checkPlan()
     this.retrieve()
   },
   data(){
@@ -51,13 +61,18 @@ export default {
       newTitle: null,
       data: null,
       groups: null,
-      selectedIndex: 0
+      partners: null,
+      selectedIndex: 0,
+      selectedGroupData: null,
+      prevModuleSelected: null,
+      username: this.$route.params.username
     }
   },
   props: ['params'],
   components: {
     'conversation': require('modules/conversation/Conversation.vue'),
-    'groups': require('modules/userlist/Groups.vue')
+    'groups': require('modules/userlist/Groups.vue'),
+    'empty': require('modules/empty/Empty.vue')
   },
   methods: {
     redirect(parameter){
@@ -76,27 +91,74 @@ export default {
     },
     retrieve(){
       let parameter = {
-        condition: [{
-          value: this.user.userID,
-          column: 'account_id',
-          clause: '='
-        }]
+        account_id: this.user.userID,
+        account_type: this.user.type,
+        username: (this.username) ? this.username : ''
       }
-      this.APIRequest('messenger_groups/retrieve', parameter).then(response => {
+      this.APIRequest('messenger_groups/retrieve', parameter).done(response => {
         if(response.data.length > 0){
           this.groups = response.data
+          this.partners = response.accounts
+          if(this.partners !== null){
+            this.prevModuleSelected = 'partners'
+            this.selectedGroup(0, 'partners')
+          }else if(this.groups !== null){
+            this.prevModuleSelected = 'groups'
+            this.selectedGroup(response.active, 'groups')
+          }
         }else{
           this.groups = null
+          this.partners = null
         }
       })
     },
-    selectedGroup(index){
-      for (var i = 0; i < this.$children.length; i++) {
-        if(this.$children[i].$el.id === 'groupConversation'){
-          this.$children[i].group = this.groups[index]
-          this.$children[i].retrieve()
+    selectedGroup(index, moduleText){
+      this.selectedIndex = index
+      var i = 0
+      if(moduleText === 'groups'){
+        this.groupId = this.groups[index].id
+        this.selectedGroupData = this.groups[index]
+        for (i = 0; i < this.$children.length; i++) {
+          if(this.$children[i].$el.id === 'groupConversation'){
+            this.$children[i].newFlag = false
+            this.$children[i].conversations = null
+          }
+        }
+      }else if(moduleText === 'partners'){
+        this.groupId = null
+        this.selectedGroupData = this.partners[index]
+        for (i = 0; i < this.$children.length; i++) {
+          if(this.$children[i].$el.id === 'groupConversation'){
+            this.$children[i].newFlag = true
+            this.$children[i].conversations = null
+            this.$children[i].retrieve()
+          }
         }
       }
+    },
+    makeActiveCard(index, moduleText){
+      if(moduleText === 'groups' && this.prevModuleSelected === 'groups'){
+        if(this.selectedIndex !== index){
+          this.groups[this.selectedIndex].flag = false
+          this.groups[index].flag = true
+        }
+      }
+      if(moduleText === 'groups' && this.prevModuleSelected === 'partners'){
+        this.partners[this.selectedIndex].flag = false
+        this.groups[index].flag = true
+      }
+      if(moduleText === 'partners' && this.prevModuleSelected === 'groups'){
+        this.groups[this.selectedIndex].flag = false
+        this.partners[index].flag = true
+      }
+      if(moduleText === 'partners' && this.prevModuleSelected === 'partners'){
+        if(this.selectedIndex !== index){
+          this.groups[this.selectedIndex].flag = false
+          this.groups[index].flag = true
+        }
+      }
+      this.prevModuleSelected = moduleText
+      this.selectedGroup(index, moduleText)
     }
   }
 }

@@ -456,7 +456,10 @@ Route::post('/messenger_groups/create', "MessengerGroupController@create");
 Route::post('/messenger_groups/create_new_issue', "MessengerGroupController@createNewIssue");
 Route::post('/messenger_groups/retrieve', "MessengerGroupController@retrieve");
 Route::post('/messenger_groups/retrieve_summary', "MessengerGroupController@retrieveSummary");
+<<<<<<< HEAD
 Route::post('/messenger_groups/retrieve_my_issue', "MessengerGroupController@retrieveMyIssue");
+=======
+>>>>>>> acd3c8961163e695a8ad07eecaad743cb28630d1
 Route::post('/messenger_groups/update', "MessengerGroupController@update");
 Route::post('/messenger_groups/delete', "MessengerGroupController@delete");
 Route::get('/messenger_groups/test', 'MessengerGroupController@test');
@@ -467,6 +470,20 @@ Route::post('/messenger_messages/retrieve', "MessengerMessageController@retrieve
 Route::post('/messenger_messages/update', "MessengerMessageController@update");
 Route::post('/messenger_messages/delete', "MessengerMessageController@delete");
 Route::get('/messenger_messages/test', 'MessengerMessageController@test');
+
+//Messenger Member Controller
+Route::post('/messenger_members/create', "MessengerMemberController@create");
+Route::post('/messenger_members/retrieve', "MessengerMemberController@retrieve");
+Route::post('/messenger_members/update', "MessengerMemberController@update");
+Route::post('/messenger_members/delete', "MessengerMemberController@delete");
+Route::get('/messenger_members/test', 'MessengerMemberController@test');
+
+//Messenger Message Controller
+Route::post('/messenger_message_files/create', "MessengerMessageFileController@create");
+Route::post('/messenger_message_files/retrieve', "MessengerMessageFileController@retrieve");
+Route::post('/messenger_message_files/update', "MessengerMessageFileController@update");
+Route::post('/messenger_message_files/delete', "MessengerMessageFileController@delete");
+Route::get('/messenger_message_files/test', 'MessengerMessageFileController@test');
 
 //Product Controller
 Route::post('/products/create', "ProductController@create");
@@ -630,3 +647,7 @@ Route::post('/checkout_items/retrieve', "CheckoutItemController@retrieve");
 Route::post('/checkout_items/update', "CheckoutItemController@update");
 Route::post('/checkout_items/delete', "CheckoutItemController@delete");
 Route::get('/checkout_items/test', 'CheckoutItemController@test');
+
+//Orders
+Route::post('/orders/retrieve_orders', "CheckoutController@retrieveOrders");
+Route::post('/orders/retrieve_order_items', "CheckoutController@retrieveOrderItems");

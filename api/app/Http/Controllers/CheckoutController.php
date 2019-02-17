@@ -58,6 +58,21 @@ class CheckoutController extends ClassWorxController
       return $this->response();
     }
 
+    public function retrieveOrderItems(Request $request){
+      $data = $request->all();
+      $this->retrieveDB($data);
+      $result = $this->response['data'];
+      if(sizeof($result) > 0){
+        $i = 0;
+        foreach ($result as $key) {
+          $this->response['data'][$i]['items'] = $this->getOrderItems($result[$i]['id']);
+          $i++;
+        }
+      }
+      
+      return $this->response();
+    }
+
     public function getItems($checkoutId, $price, $accountId){
       $result = CheckoutItem::where('checkout_id', '=', $checkoutId)->get();
       $this->subTotal = 0;

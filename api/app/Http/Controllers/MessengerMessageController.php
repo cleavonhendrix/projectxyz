@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\MessengerMessage;
 use Carbon\Carbon;
+
 class MessengerMessageController extends ClassWorxController
 {
     function __construct(){

@@ -66,6 +66,8 @@ export default {
           account_id: this.user.userID,
           title: this.title,
           description: this.description,
+          sku: 'CW-0',
+          tags: 'test',
           status: 'pending'
         }
         this.APIRequest('products/create', parameter).then(response => {
