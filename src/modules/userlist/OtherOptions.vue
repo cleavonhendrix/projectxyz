@@ -1,8 +1,9 @@
 <template>
   <div class="holder">
-    <div class="options">
-      <label>Other Options Here</label>
-    </div>
+<!--     <img :src="config.BACKEND_URL + user.account_profile.profile_url" class="profile" v-if="user.account_profile !== null">
+    <i class="fa fa-user-circle-o" v-else></i> -->
+    <label>{{group.title}}</label>
+    <span><i class="fa fa-plus-square" @click="newmessage()"></i></span>
   </div>
 </template>
 <script>
@@ -18,10 +19,25 @@ export default {
       config: CONFIG
     }
   },
-  props: ['params'],
+  props: ['messengerGroupId'],
   methods: {
     redirect(parameter){
       ROUTER.push(parameter)
+    },
+    newmessage(){
+      if(this.newMessageInput !== '' || this.newMessageInput !== null){
+        let parameter = {
+          messenger_group_id: this.messengerGroupId,
+          message: this.newMessageInput,
+          account_id: this.user.userID
+        }
+        this.APIRequest('messenger_messages/create', parameter).then(response => {
+          if(response.data > 0){
+            this.newMessageInput = null
+            this.$parent.retrieve()
+          }
+        })
+      }
     }
   }
 }
@@ -32,10 +48,15 @@ export default {
   float: left;
   height: 30vh;
 }
-.options{
-  background: #999;
-  height: 100%;
-  text-align: center;
+span{
+  width: 10%;
+  float: right;
+  height: 45px;
+  line-height: 45px;
+  text-align: right;
+}
+span i{
+  font-size: 24px;
 }
 
 </style>

@@ -5,7 +5,6 @@
     <label>{{group.title}}
       <span class="badge badge-primary">{{group.total_members}}</span>
     </label>
-    
   </div>
 </template>
 <style scoped>

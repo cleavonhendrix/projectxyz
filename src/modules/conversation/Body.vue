@@ -43,6 +43,7 @@
   overflow-y: hidden;
   margin-top: 10px;
 
+
 } 
 .right-template{
   width: 90%;
@@ -73,6 +74,7 @@
 .holder::-webkit-scrollbar { width: 0; }
 
 </style>
+
 <script>
 import ROUTER from '../../router'
 import AUTH from '../../services/auth'

@@ -1,7 +1,7 @@
 <template>
   <div class="holder">
     <div class="conversation">
-      <conversation></conversation>   
+      <conversation :conversation="conversation" v-if="conversation !== null"></conversation>   
     </div>
     <div class="users">
       <groups :groups="groups" v-if="groups !== null"></groups>
