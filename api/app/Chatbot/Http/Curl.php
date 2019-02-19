@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ilinya\Http;
+namespace App\Chatbot\Http;
 use Symfony\Component\HttpFoundation\Response;
 
 

@@ -24,11 +24,23 @@ export default {
     events: {
       data: null,
       current: null
+    },
+    messages: {
+      data: null,
+      current: 1,
+      prevCurrent: null
     }
   },
   timer: {
     interval: null,
     speed: 1000
+  },
+<<<<<<< HEAD
+  messengerSupport: {
+=======
+  messenger: {
+>>>>>>> acd3c8961163e695a8ad07eecaad743cb28630d1
+    flag: null
   },
   notifTimer: {
     timer: null,
@@ -125,6 +137,7 @@ export default {
           }
         })
         this.retrieveNotifications(userInfo.id)
+        this.retrieveMessages(userInfo.id, userInfo.account_type)
         this.retrieveEvents(userInfo.id)
         if(callback){
           callback(userInfo)
@@ -169,6 +182,7 @@ export default {
           }
         })
         this.retrieveNotifications(userInfo.id)
+        this.retrieveMessages(userInfo.id, userInfo.account_type)
         this.retrieveEvents(userInfo.id)
       }, (response) => {
         this.setToken(null)
@@ -191,8 +205,14 @@ export default {
     this.setUser(null)
     let vue = new Vue()
     vue.APIRequest('authenticate/invalidate')
+    this.clearMessenger()
     this.clearNotifTimer()
+<<<<<<< HEAD
+    this.clearMessengerSuuport()
     ROUTER.push('/')
+=======
+    this.tokenData.token = null
+>>>>>>> acd3c8961163e695a8ad07eecaad743cb28630d1
     ROUTER.go('/')
   },
   retrieveNotifications(accountId){
@@ -250,6 +270,11 @@ export default {
       this.notifTimer.timer = null
     }
   },
+  clearMessengerSuuport(){
+    if(this.messengerSupport.flag !== null){
+      this.messengerSupport.flag = null
+    }
+  },
   playNotificationSound(){
     let audio = require('../../assets/audio/notification.mp3')
     let sound = new Howl({
@@ -266,5 +291,33 @@ export default {
   setReports(description, courseId){
     this.reports.description = description
     this.reports.course_id = courseId
+  },
+  retrieveMessages(accountId, type){
+    let vue = new Vue()
+    let parameter = {
+      account_id: accountId,
+      account_type: type
+    }
+    vue.APIRequest('messenger_groups/retrieve_summary', parameter).then(response => {
+      this.user.messages.data = response.data
+    })
+  },
+  clearMessenger(){
+    if(this.messenger.flag !== null){
+      this.messenger.flag = null
+    }
+  },
+  redirect(path){
+    if(path.includes('messenger') === false){
+      this.clearMessenger()
+    }else{
+      this.messenger.flag = true
+    }
+    ROUTER.push(path)
+  },
+  checkPlan(){
+    // if(this.user.plan.title === 'Expired' && this.user.type !== 'ADMIN'){
+    //   ROUTER.push('/plan')
+    // }
   }
 }

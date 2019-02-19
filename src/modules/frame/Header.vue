@@ -58,12 +58,13 @@
                   </span>
                   <span class="account-info text-center">{{user.username}}</span>
                 </span>
-                <span class="dropdown-item dropdown-item-menu-title">
-                  <label>Profile</label>
-                </span>
-                <span class="dropdown-item" v-on:click="redirect('/account_settings')">
+                <span class="dropdown-item" v-on:click="redirect('/profile')">
                   <i class="fa fa-cog"></i>
-                  <label>Account Settings</label>
+                  <label>My Profile</label>
+                </span>
+                <span class="dropdown-item" v-on:click="redirect('/plan')">
+                  <i class="fa fa-tag"></i>
+                  <label>My Plan</label>
                 </span>
                 <span class="dropdown-item dropdown-item-menu-title">
                   <label>Documents</label>
@@ -93,6 +94,27 @@
                   </span>
               </span>
             </span>
+        </div>
+
+        <div class="dropdown" v-if="user.messages !== null"> 
+          <span class="nav-item" data-toggle="dropdown" id="notifications" aria-haspopup="true" aria-expanded="false">
+            <span>
+              <i class="fas fa-envelope" style="font-size: 22px;margin-top: 2px;"></i>
+              <!-- <label class="badge badge-danger" style="margin-left: -15px;" v-if="parseInt(user.messages.current) > 0">{{user.messages.current}}</label> -->
+            </span>
+            <span class="dropdown-menu dropdown-menu-right dropdown-menu-notification" aria-labelledby="notifications">
+              <span class="notification-header" @click="redirect('/messenger')">
+                View Messages
+              </span>
+              <span class="notification-item" v-for="item, index in user.messages.data" v-if="user.messages.data !== null">
+                <span class="notification-title">
+                      {{item.title.username}}
+                </span>
+                <span class="notification-description">{{item.description}}</span>
+                <span class="notification-date">Posted on {{item.created_at_human}}</span>
+              </span>
+            </span>
+          </span>
         </div>
 
         <div class="dropdown"> 
